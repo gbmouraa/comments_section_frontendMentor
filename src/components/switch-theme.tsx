@@ -2,13 +2,13 @@ import { useEffect, useState } from "react";
 import { Switch } from "./ui/switch";
 import { Label } from "./ui/label";
 
-export const ThemeAlternator: React.FC = () => {
-  const [darkModeIsSelected, setDarkModeIsSelectd] = useState<boolean>(false);
+export const SwitchTheme: React.FC = () => {
+  const [darkModeIsSelected, setDarkModeIsSelected] = useState<boolean>(false);
 
   useEffect(() => {
     const checkTheme = () => {
       const storedTheme = localStorage.getItem("@theme");
-      if (storedTheme && storedTheme === "dark") {
+      if (storedTheme === "dark") {
         handleChange(true);
       }
     };
@@ -26,7 +26,7 @@ export const ThemeAlternator: React.FC = () => {
   }, [darkModeIsSelected]);
 
   const handleChange = (event: boolean) => {
-    setDarkModeIsSelectd(event);
+    setDarkModeIsSelected(event);
   };
 
   return (
@@ -36,7 +36,7 @@ export const ThemeAlternator: React.FC = () => {
         checked={darkModeIsSelected}
         onCheckedChange={(event) => handleChange(event)}
       />
-      <Label htmlFor="dark-mode" className="text-slate-500">
+      <Label htmlFor="dark-mode" className="text-slate-500 dark:text-gray-200">
         Dark Mode
       </Label>
     </div>

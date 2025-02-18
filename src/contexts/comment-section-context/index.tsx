@@ -1,6 +1,6 @@
 import React, { createContext, useState } from "react";
 
-type CurrentUser = {
+export type CurrentUser = {
   id: number;
   username: string;
 };

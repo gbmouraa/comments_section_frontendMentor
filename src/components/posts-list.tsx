@@ -1,13 +1,13 @@
 import React from "react";
 import { useState, useEffect } from "react";
-import { Post } from "./post";
+import { Post } from "./post-item";
 import { api } from "../api";
 import { PostProps } from "@/types";
 
 export const Posts: React.FC = () => {
   const [comments, setComments] = useState<PostProps[]>([]);
 
-  // criar loading no contexto
+  // criar loading no context
   useEffect(() => {
     const apiRequest = async () => {
       try {
@@ -26,9 +26,9 @@ export const Posts: React.FC = () => {
 
   return (
     <div className="flex flex-col">
-      {comments.map((item) => {
-        return (
-          <ul key={item.id}>
+      <ul>
+        {comments.map((item) => {
+          return (
             <li key={item.id}>
               <Post
                 content={item.content}
@@ -38,9 +38,9 @@ export const Posts: React.FC = () => {
                 score={item.score}
               />
             </li>
-          </ul>
-        );
-      })}
+          );
+        })}
+      </ul>
     </div>
   );
 };

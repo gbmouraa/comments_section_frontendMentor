@@ -2,7 +2,7 @@ import React, { useEffect } from "react";
 import { SwitchTheme } from "./components/switch-theme";
 import { Profiles } from "./components/profiles";
 import { UserProvider } from "./contexts/comment-section-context";
-import { Posts } from "./components/posts";
+import { Posts } from "./components/posts-list";
 
 // json do projeto https://api.npoint.io/ea3f650878adcbc9d32f
 

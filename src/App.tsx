@@ -1,30 +1,12 @@
-import React, { useEffect } from "react";
 import { SwitchTheme } from "./components/switch-theme";
 import { Profiles } from "./components/profiles";
-import { UserProvider } from "./contexts/comment-section-context";
+import { AppProvider } from "./contexts/providers/app-provider";
 import { Posts } from "./components/posts-list";
 
-// json do projeto https://api.npoint.io/ea3f650878adcbc9d32f
-
 export const App: React.FC = () => {
-  useEffect(() => {
-    const applyTheme = () => {
-      const storedTheme = localStorage.getItem("@theme");
-      if (storedTheme === "dark") {
-        document.documentElement.classList.add("dark");
-      } else {
-        document.documentElement.classList.remove("dark");
-        if (storedTheme !== "light") {
-          localStorage.setItem("@theme", "dark");
-        }
-      }
-    };
-    applyTheme();
-  }, []);
-
   return (
     <>
-      <UserProvider>
+      <AppProvider>
         <div className="min-h-screen w-full bg-neutral-100 p-4 dark:bg-zinc-800 md:py-10">
           <div className="flex flex-wrap items-center justify-between gap-6 md:flex-nowrap md:items-start">
             <div className="order-0 min-w-[118px] md:-translate-y-5">
@@ -38,7 +20,7 @@ export const App: React.FC = () => {
             </div>
           </div>
         </div>
-      </UserProvider>
+      </AppProvider>
     </>
   );
 };

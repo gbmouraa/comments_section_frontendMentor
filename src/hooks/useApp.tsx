@@ -1,8 +1,8 @@
-import { UserContext } from "@/contexts/comment-section-context";
+import { AppContext } from "@/contexts/app-context";
 import { useContext } from "react";
 
-export const useUser = () => {
-  const context = useContext(UserContext);
+export const useApp = () => {
+  const context = useContext(AppContext);
 
   if (!context) {
     throw new Error("useUser must be used inside of an UseProvider");

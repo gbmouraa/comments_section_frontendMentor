@@ -1,32 +1,47 @@
 import { useEffect, useState } from "react";
+import { useApp } from "@/hooks/useApp";
 import { Switch } from "./ui/switch";
 import { Label } from "./ui/label";
 
 export const SwitchTheme: React.FC = () => {
   const [darkModeIsSelected, setDarkModeIsSelected] = useState<boolean>(false);
+  const { storedApp, setStoredApp } = useApp();
 
   useEffect(() => {
-    const checkTheme = () => {
-      const storedTheme = localStorage.getItem("@theme");
-      if (storedTheme === "dark") {
-        handleChange(true);
-      }
-    };
-    checkTheme();
-  }, []);
-
-  useEffect(() => {
-    if (darkModeIsSelected) {
-      localStorage.setItem("@theme", "dark");
+    if (storedApp?.theme === "dark") {
+      const data = {
+        ...storedApp,
+        theme: "dark",
+      };
+      localStorage.setItem("@postApp", JSON.stringify(data));
       document.documentElement.classList.add("dark");
+      document.documentElement.classList.remove("light");
+      setDarkModeIsSelected(true);
     } else {
-      localStorage.setItem("@theme", "light");
+      const data = {
+        ...storedApp,
+        theme: "light",
+      };
+      localStorage.setItem("@postApp", JSON.stringify(data));
+      document.documentElement.classList.add("light");
       document.documentElement.classList.remove("dark");
+      setDarkModeIsSelected(false);
     }
   }, [darkModeIsSelected]);
 
-  const handleChange = (event: boolean) => {
-    setDarkModeIsSelected(event);
+  const handleChange = (isActive: boolean) => {
+    setDarkModeIsSelected(isActive);
+    if (isActive) {
+      setStoredApp((prev) => ({
+        ...prev,
+        theme: "dark",
+      }));
+    } else {
+      setStoredApp((prev) => ({
+        ...prev,
+        theme: "light",
+      }));
+    }
   };
 
   return (

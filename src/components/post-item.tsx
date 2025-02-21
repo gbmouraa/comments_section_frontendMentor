@@ -11,19 +11,18 @@ import { Avatar, AvatarFallback, AvatarImage } from "@radix-ui/react-avatar";
 import { CommentVotingButton } from "./comment-voting-button";
 import { PostProps } from "@/types";
 import { Reply } from "./reply";
-import { useUser } from "@/hooks/useUser";
+import { useApp } from "@/hooks/useApp";
 import { EditComment } from "./edit-comment";
 import { Replies } from "./replies";
 
 // same component for replies
 export const Post: React.FC<PostProps> = ({
   content,
-  id,
   user,
   replies,
   score,
 }: PostProps) => {
-  const { currentUser } = useUser();
+  const { storedApp } = useApp();
 
   return (
     <div className="relative min-w-full">
@@ -33,15 +32,15 @@ export const Post: React.FC<PostProps> = ({
             <CardTitle className="flex items-center gap-x-3">
               <Avatar>
                 <AvatarImage
-                  src={user.image.png}
+                  src={user.image}
                   alt="Profile picture"
                   width={36}
                 />
                 <AvatarFallback>{user.username}</AvatarFallback>
               </Avatar>
               <span className="flex gap-x-2 text-base font-medium text-indigo-900 dark:text-gray-200">
-                {user.username}{" "}
-                {currentUser?.id === id && (
+                {user.username}
+                {storedApp?.currentUser?.username === user.username && (
                   <Badge className="bg-indigo-600 text-xs text-white">
                     you
                   </Badge>
@@ -56,7 +55,11 @@ export const Post: React.FC<PostProps> = ({
         </div>
         <CardFooter className="justify-between">
           <CommentVotingButton score={score} />
-          {currentUser?.id !== id ? <Reply /> : <EditComment />}
+          {storedApp?.currentUser?.username !== user.username ? (
+            <Reply />
+          ) : (
+            <EditComment />
+          )}
         </CardFooter>
       </Card>
       {replies ? (
@@ -64,6 +67,7 @@ export const Post: React.FC<PostProps> = ({
           {replies.map((item) => (
             <li key={item.id} className="ml-auto w-[95%]">
               <Replies
+                postID={item.id}
                 content={item.content}
                 id={item.id}
                 user={item.user}

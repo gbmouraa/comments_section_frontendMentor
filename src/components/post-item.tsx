@@ -67,7 +67,6 @@ export const Post: React.FC<PostProps> = ({
           {replies.map((item) => (
             <li key={item.id} className="ml-auto w-[95%]">
               <Replies
-                postID={item.id}
                 content={item.content}
                 id={item.id}
                 user={item.user}

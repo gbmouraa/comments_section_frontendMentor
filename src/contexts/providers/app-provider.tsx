@@ -1,6 +1,7 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { AppContext } from "../app-context";
 import { StoredAppType } from "@/types";
+import { api } from "@/api";
 export const AppProvider = ({ children }: { children: React.ReactNode }) => {
   const storedData = localStorage.getItem("@postApp");
   const [storedApp, setStoredApp] = useState<StoredAppType>(() => {
@@ -18,6 +19,25 @@ export const AppProvider = ({ children }: { children: React.ReactNode }) => {
       posts: [],
     };
   });
+
+  useEffect(() => {
+    const getPosts = async () => {
+      if (storedData) return;
+      try {
+        const response = await api.get(
+          "https://api.npoint.io/ea3f650878adcbc9d32f",
+        );
+        const data = { ...storedApp, posts: response.data.comments };
+        setStoredApp(data);
+        localStorage.setItem("@postApp", JSON.stringify(data));
+      } catch (error) {
+        console.error(
+          `Sorry, it was not possible to fetch the data now. Please try again later. ${error}`,
+        );
+      }
+    };
+    getPosts();
+  }, []);
 
   return (
     <AppContext.Provider value={{ storedApp, setStoredApp }}>

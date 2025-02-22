@@ -1,13 +1,12 @@
 export type StoredAppType = {
   theme: "light" | "dark";
   currentUser: CurrentUserType | null;
-  posts: [];
+  posts: PostProps[];
 };
 
 export interface PostProps {
   content: string;
   id: number;
-  postID: number;
   user: {
     image: string;
     username: string;

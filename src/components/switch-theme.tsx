@@ -2,7 +2,6 @@ import { useEffect, useState } from "react";
 import { useApp } from "@/hooks/useApp";
 import { Switch } from "./ui/switch";
 import { Label } from "./ui/label";
-import { motion } from "framer-motion";
 
 export const SwitchTheme: React.FC = () => {
   const [darkModeIsSelected, setDarkModeIsSelected] = useState<boolean>(false);
@@ -46,14 +45,7 @@ export const SwitchTheme: React.FC = () => {
   };
 
   return (
-    <motion.div
-      initial={{ opacity: 0, scale: 0 }}
-      animate={{ opacity: 1, scale: 1 }}
-      transition={{
-        duration: 1,
-      }}
-      className="flex items-center gap-x-2"
-    >
+    <div className="mt-3 flex min-w-[118px] items-center gap-x-2 md:mt-0">
       <Switch
         id="dark-mode"
         checked={darkModeIsSelected}
@@ -62,6 +54,6 @@ export const SwitchTheme: React.FC = () => {
       <Label htmlFor="dark-mode" className="text-slate-500 dark:text-gray-200">
         Dark Mode
       </Label>
-    </motion.div>
+    </div>
   );
 };

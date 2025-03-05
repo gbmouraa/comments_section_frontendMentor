@@ -5,9 +5,8 @@ import { motion } from "framer-motion";
 
 export const Posts: React.FC = () => {
   const { storedApp } = useApp();
-
   return (
-    <div className="flex flex-col">
+    <div className="mt-8 flex flex-col items-center md:mt-4">
       <ul>
         {storedApp?.posts.map((item, idx) => {
           return (
@@ -27,7 +26,6 @@ export const Posts: React.FC = () => {
                 user={item.user}
                 replies={item.replies}
                 score={item.score}
-                isReply={item.user.username !== storedApp.currentUser?.username}
               />
             </motion.li>
           );

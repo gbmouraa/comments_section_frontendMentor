@@ -21,7 +21,7 @@ export const Profiles: React.FC = () => {
   };
 
   return (
-    <div className="ml-auto">
+    <div className="absolute right-4 top-4 md:right-4">
       <ul className="right-4 top-4 flex gap-2 md:flex-col">
         {users.map((user, idx) => (
           <motion.li
@@ -33,13 +33,13 @@ export const Profiles: React.FC = () => {
               duration: 1,
             }}
             key={idx}
-            className={`h-10 w-10 cursor-pointer overflow-hidden rounded-full opacity-0 transition-opacity duration-700 ease-out ${storedApp?.currentUser?.username === user.username && "outline outline-2 outline-indigo-600"} `}
+            className={`h-10 w-10 cursor-pointer overflow-hidden rounded-full opacity-0 transition-opacity duration-1000 ease-out ${storedApp?.currentUser?.username === user.username && "outline outline-2 outline-indigo-600"} `}
           >
             <button
               onClick={() => handleChangeUser(user)}
               aria-label={`Select profile ${user.username}`}
             >
-              <div className="duration-800 relative w-full transition-all hover:scale-110">
+              <div className="duration-800 relative w-full transition-all hover:scale-125">
                 <Avatar>
                   <AvatarImage src={user.image} alt={user.username} />
                 </Avatar>

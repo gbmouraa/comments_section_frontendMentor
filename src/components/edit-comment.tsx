@@ -11,8 +11,54 @@ import {
   AlertDialogTrigger,
 } from "./ui/alert-dialog";
 import { Trash, Pencil } from "lucide-react";
+import { useApp } from "@/hooks/useApp";
 
-export const EditComment: React.FC = () => {
+interface EditCommentProps {
+  id: number;
+  replyingToUserID?: number;
+}
+
+export const EditComment: React.FC<EditCommentProps> = ({
+  id,
+  replyingToUserID,
+}: EditCommentProps) => {
+  const { storedApp, setStoredApp } = useApp();
+
+  const handleDelete = () => {
+    // if the post is a reply
+    if (replyingToUserID) {
+      const originalPostIndex = storedApp?.posts?.findIndex(
+        (item) => item.id === replyingToUserID,
+      );
+      const originalPost = storedApp?.posts[originalPostIndex];
+      const updatedReplies = originalPost.replies.filter(
+        (item) => item.id !== id,
+      );
+      originalPost.replies = updatedReplies;
+      const posts = storedApp?.posts;
+      posts[originalPostIndex] = originalPost;
+      setStoredApp((prev) => ({
+        ...prev,
+        posts: posts,
+      }));
+      const updatedData = { ...storedApp, posts: posts };
+      localStorage.setItem("@postApp", JSON.stringify(updatedData));
+      return;
+    }
+
+    let updatedPosts = storedApp?.posts?.filter((item) => item.id !== id);
+    setStoredApp((prev) => ({
+      ...prev,
+      posts: updatedPosts,
+    }));
+    const updatedData = { ...storedApp, posts: updatedPosts };
+    localStorage.setItem("@postApp", JSON.stringify(updatedData));
+  };
+
+  const handleEdit = (id: number) => {
+    console.log(id);
+  };
+
   return (
     <div className="md:absolute md:right-6 md:top-6">
       <AlertDialog>
@@ -32,13 +78,16 @@ export const EditComment: React.FC = () => {
           </AlertDialogHeader>
           <AlertDialogFooter>
             <AlertDialogCancel>Please, don't</AlertDialogCancel>
-            <AlertDialogAction>Yes, Delete</AlertDialogAction>
+            <AlertDialogAction onClick={handleDelete}>
+              Yes, Delete
+            </AlertDialogAction>
           </AlertDialogFooter>
         </AlertDialogContent>
       </AlertDialog>
       <Button
         variant="ghost"
         className="px-2 text-indigo-400 transition-all hover:bg-transparent hover:text-indigo-400 hover:opacity-70"
+        onClick={() => handleEdit(id)}
       >
         <Pencil />
         Edit

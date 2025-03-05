@@ -1,7 +1,9 @@
 export type StoredAppType = {
+  alreadyStored: boolean;
   theme: "light" | "dark";
   currentUser: CurrentUserType | null;
-  posts: PostProps[];
+  posts: PostProps[] | null | undefined;
+  replies: [] | null;
 };
 
 export interface PostProps {
@@ -13,6 +15,8 @@ export interface PostProps {
   };
   replies: PostProps[];
   score: number;
+  replyingTo?: string;
+  replyingToUserID?: number;
 }
 
 export type CurrentUserType = {
@@ -20,7 +24,10 @@ export type CurrentUserType = {
   image: string;
 };
 
+export type isLoadingType = true | false;
+
 export type AppValueContext = {
   storedApp: StoredAppType | null;
   setStoredApp: React.Dispatch<React.SetStateAction<StoredAppType>>;
+  isLoading: isLoadingType;
 };

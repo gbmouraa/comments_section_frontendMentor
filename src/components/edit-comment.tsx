@@ -22,20 +22,20 @@ export const EditComment: React.FC<EditCommentProps> = ({
   id,
   replyingToUserID,
 }: EditCommentProps) => {
-  const { storedApp, setStoredApp } = useApp();
+  const { storedApp, setStoredApp, setIsEditing, isEditing } = useApp();
 
   const handleDelete = () => {
     // if the post is a reply
     if (replyingToUserID) {
-      const originalPostIndex = storedApp?.posts?.findIndex(
+      const originalPostIndex = storedApp!.posts?.findIndex(
         (item) => item.id === replyingToUserID,
       );
-      const originalPost = storedApp?.posts[originalPostIndex];
-      const updatedReplies = originalPost.replies.filter(
+      const originalPost = storedApp?.posts![originalPostIndex!];
+      const updatedReplies = originalPost!.replies.filter(
         (item) => item.id !== id,
       );
-      originalPost.replies = updatedReplies;
-      const posts = storedApp?.posts;
+      originalPost!.replies = updatedReplies;
+      const posts = storedApp?.posts!;
       posts[originalPostIndex] = originalPost;
       setStoredApp((prev) => ({
         ...prev,
@@ -56,7 +56,7 @@ export const EditComment: React.FC<EditCommentProps> = ({
   };
 
   const handleEdit = (id: number) => {
-    console.log(id);
+    setIsEditing({ active: !isEditing.active, postID: id });
   };
 
   return (

@@ -26,8 +26,15 @@ export type CurrentUserType = {
 
 export type isLoadingType = true | false;
 
+export type isEditingType = {
+  active: true | false;
+  postID: number | null;
+};
+
 export type AppValueContext = {
   storedApp: StoredAppType | null;
   setStoredApp: React.Dispatch<React.SetStateAction<StoredAppType>>;
   isLoading: isLoadingType;
+  isEditing: isEditingType;
+  setIsEditing: React.Dispatch<React.SetStateAction<isEditingType>>;
 };

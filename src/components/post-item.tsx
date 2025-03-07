@@ -1,4 +1,5 @@
-import React from "react";
+import React, { useEffect } from "react";
+import { useRef } from "react";
 import {
   Card,
   CardContent,
@@ -15,8 +16,9 @@ import { useApp } from "@/hooks/useApp";
 import { EditComment } from "./edit-comment";
 import { Replies } from "./replies";
 import { motion } from "framer-motion";
+import { Textarea } from "./ui/textarea";
+import { Button } from "./ui/button";
 
-// same component for replies
 export const Post: React.FC<PostProps> = ({
   content,
   user,
@@ -24,7 +26,41 @@ export const Post: React.FC<PostProps> = ({
   score,
   id,
 }: PostProps) => {
-  const { storedApp } = useApp();
+  const { storedApp, setStoredApp, isEditing, setIsEditing } = useApp();
+  const textAreaRef = useRef<HTMLTextAreaElement>(null);
+
+  useEffect(() => {
+    const handleFocus = () => {
+      if (isEditing.active) {
+        const length = textAreaRef.current?.value.length;
+        textAreaRef.current?.focus();
+        textAreaRef.current?.setSelectionRange(length!, length!);
+      }
+    };
+    handleFocus();
+  }, [isEditing]);
+
+  const handleEdit = (id: number) => {
+    if (textAreaRef.current?.value !== "") {
+      const updatedPost = textAreaRef.current?.value;
+      const postIndex = storedApp?.posts?.findIndex((post) => post.id === id);
+      let posts = storedApp?.posts;
+      posts![postIndex!].content = updatedPost!;
+      const data = {
+        ...storedApp,
+        posts: posts,
+      };
+      setStoredApp((prev) => ({
+        ...prev,
+        posts: posts,
+      }));
+
+      localStorage.setItem("@postApp", JSON.stringify(data));
+
+      setIsEditing({ active: false, postID: null });
+    }
+  };
+
   return (
     <motion.div
       className="relative w-full max-w-[720px]"
@@ -32,7 +68,7 @@ export const Post: React.FC<PostProps> = ({
       animate={{ opacity: 1 }}
       transition={{ duration: 2 }}
     >
-      <Card className="bg-white text-zinc-500 dark:bg-[#2c2f33] dark:text-gray-200">
+      <Card className="min-h-[140px] bg-white text-zinc-500 dark:bg-[#2c2f33] dark:text-gray-200">
         <div className="">
           <CardHeader className="md:w-[calc(100%-64px)] md:translate-x-[64px]">
             <CardTitle className="flex items-center gap-x-3">
@@ -55,9 +91,21 @@ export const Post: React.FC<PostProps> = ({
               <span className="text-sm font-thin">1 month ago</span>
             </CardTitle>
           </CardHeader>
-          <CardContent className="md:w-[calc(100%-64px)] md:translate-x-[64px]">
-            <p className="">{content}</p>
-          </CardContent>
+          {isEditing.active && isEditing.postID === id ? (
+            <div className="mx-auto max-w-[608px] translate-x-6">
+              <Textarea defaultValue={content} ref={textAreaRef} />
+              <Button
+                className="ml-auto mt-3 block bg-indigo-500 text-white dark:text-[#2c2f33]"
+                onClick={() => handleEdit(id)}
+              >
+                Update
+              </Button>
+            </div>
+          ) : (
+            <CardContent className="md:w-[calc(100%-64px)] md:translate-x-[64px]">
+              <p className="">{content}</p>
+            </CardContent>
+          )}
         </div>
         <CardFooter className="justify-between">
           <VotingButton score={score} user={user.username} />

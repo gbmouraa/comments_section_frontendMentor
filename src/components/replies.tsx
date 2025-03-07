@@ -1,3 +1,4 @@
+import { useRef, useEffect } from "react";
 import { motion } from "framer-motion";
 import { PostProps } from "@/types";
 import { Avatar, AvatarImage, AvatarFallback } from "@radix-ui/react-avatar";
@@ -13,6 +14,8 @@ import {
   CardFooter,
 } from "./ui/card";
 import { useApp } from "@/hooks/useApp";
+import { Button } from "./ui/button";
+import { Textarea } from "./ui/textarea";
 
 export const Replies: React.FC<PostProps> = ({
   id,
@@ -23,7 +26,52 @@ export const Replies: React.FC<PostProps> = ({
   replyingTo,
   replyingToUserID,
 }: PostProps) => {
-  const { storedApp } = useApp();
+  const { storedApp, setStoredApp, isEditing, setIsEditing } = useApp();
+  const textAreaRef = useRef<HTMLTextAreaElement>(null);
+
+  useEffect(() => {
+    const handleFocus = () => {
+      if (isEditing.active) {
+        const length = textAreaRef.current?.value.length;
+        textAreaRef.current?.focus();
+        textAreaRef.current?.setSelectionRange(length!, length!);
+      }
+    };
+    handleFocus();
+  }, [isEditing]);
+
+  const handleEdit = (id: number) => {
+    if (textAreaRef.current?.value !== "") {
+      const originalPostIndex = storedApp!.posts?.findIndex(
+        (item) => item.id === replyingToUserID,
+      );
+      const originalPost = storedApp?.posts![originalPostIndex!];
+      const currentReplyIndex = originalPost?.replies.findIndex(
+        (item) => item.id === id,
+      );
+      const currentReply = originalPost?.replies![currentReplyIndex!];
+      let updatedReply = {
+        ...currentReply,
+        content: textAreaRef.current?.value,
+      };
+      const replies = originalPost?.replies;
+      replies![currentReplyIndex] = updatedReply;
+      const posts = storedApp?.posts;
+      posts![originalPostIndex].replies = replies;
+      const data = {
+        ...storedApp,
+        posts: posts,
+      };
+      setStoredApp((prev) => ({
+        ...prev,
+        posts: posts,
+      }));
+
+      localStorage.setItem("@postApp", JSON.stringify(data));
+
+      setIsEditing({ active: false, postID: null });
+    }
+  };
 
   return (
     <motion.div
@@ -55,12 +103,24 @@ export const Replies: React.FC<PostProps> = ({
               <span className="text-sm font-thin">1 month ago</span>
             </CardTitle>
           </CardHeader>
-          <CardContent>
-            <p>
-              <span className="text-indigo-400">@{replyingTo} </span>
-              {content}
-            </p>
-          </CardContent>
+          {isEditing.active && isEditing.postID === id ? (
+            <div className="mx-auto max-w-[608px] translate-x-6">
+              <Textarea defaultValue={content} ref={textAreaRef} />
+              <Button
+                className="ml-auto mt-3 block bg-indigo-500 text-white dark:text-[#2c2f33]"
+                onClick={() => handleEdit(id)}
+              >
+                Update
+              </Button>
+            </div>
+          ) : (
+            <CardContent>
+              <p>
+                <span className="text-indigo-400">@{replyingTo} </span>
+                {content}
+              </p>
+            </CardContent>
+          )}
         </div>
         <CardFooter className="justify-between">
           <VotingButton score={score} user={user.username} />

@@ -6,7 +6,7 @@ import { motion } from "framer-motion";
 export const Posts: React.FC = () => {
   const { storedApp } = useApp();
   return (
-    <div className="mt-8 flex flex-col items-center md:mt-4">
+    <div className="mt-10 flex -translate-y-5 flex-col items-center md:mt-6">
       <ul>
         {storedApp?.posts.map((item, idx) => {
           return (

@@ -45,13 +45,16 @@ export const SwitchTheme: React.FC = () => {
   };
 
   return (
-    <div className="mt-3 flex min-w-[118px] items-center gap-x-2 md:mt-0">
+    <div className="relative z-10 mt-3 flex min-w-[118px] items-center gap-x-2 md:mt-0">
       <Switch
         id="dark-mode"
         checked={darkModeIsSelected}
         onCheckedChange={(event) => handleChange(event)}
       />
-      <Label htmlFor="dark-mode" className="text-slate-500 dark:text-gray-200">
+      <Label
+        htmlFor="dark-mode"
+        className="cursor-pointer text-slate-500 dark:text-gray-200"
+      >
         Dark Mode
       </Label>
     </div>

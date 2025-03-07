@@ -1,10 +1,16 @@
 import React, { useEffect, useState } from "react";
 import { AppContext } from "../app-context";
 import { StoredAppType } from "@/types";
+import { isEditingType } from "@/types";
 import { api } from "@/api";
 
 export const AppProvider = ({ children }: { children: React.ReactNode }) => {
-  const [isLoading, setIsLoading] = useState<boolean>(true);
+  const [isLoading, setIsLoading] = useState(true);
+  const [isEditing, setIsEditing] = useState<isEditingType>({
+    active: false,
+    postID: null,
+  });
+
   const [storedApp, setStoredApp] = useState<StoredAppType>(() => {
     const storedData = localStorage.getItem("@postApp");
     if (storedData) {
@@ -22,7 +28,6 @@ export const AppProvider = ({ children }: { children: React.ReactNode }) => {
           "https://firebasestorage.googleapis.com/v0/b/auth-7e2b3.appspot.com/o/avatars%2Fimage-juliusomo.png?alt=media&token=a736a8b1-63d9-488d-8425-6302b62eee64",
       },
       posts: [],
-      replies: [],
     };
   });
 
@@ -48,7 +53,6 @@ export const AppProvider = ({ children }: { children: React.ReactNode }) => {
         let data = {
           ...storedApp,
           posts: response.data.comments,
-          replies: response.data.comments.map((item) => item.replies),
           alreadyStored: true,
         };
         setStoredApp(data);
@@ -70,6 +74,8 @@ export const AppProvider = ({ children }: { children: React.ReactNode }) => {
         storedApp,
         setStoredApp,
         isLoading,
+        isEditing,
+        setIsEditing,
       }}
     >
       {children}

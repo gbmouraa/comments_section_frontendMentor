@@ -40,24 +40,39 @@ export const Replies: React.FC<PostProps> = ({
     handleFocus();
   }, [isEditing]);
 
+  // we are editing a comment/reply on this post,this function
+  // is used to find the respective post in the list of posts
+  const getPost = () => {
+    const postIndex = storedApp!.posts?.findIndex(
+      (item) => item.id === replyingToUserID,
+    );
+    const post = storedApp?.posts![postIndex!];
+    return { post, postIndex };
+  };
+
+  const getCurrentReply = (id: number) => {
+    const { post, postIndex } = getPost();
+    const index: unknown = post?.replies.findIndex((item) => item.id === id);
+    const currentReplyIndex = index as number;
+    const currentReply = post?.replies[currentReplyIndex];
+    return { post, postIndex, currentReplyIndex, currentReply };
+  };
+
   const handleEdit = (id: number) => {
     if (textAreaRef.current?.value !== "") {
-      const originalPostIndex = storedApp!.posts?.findIndex(
-        (item) => item.id === replyingToUserID,
-      );
-      const originalPost = storedApp?.posts![originalPostIndex!];
-      const currentReplyIndex = originalPost?.replies.findIndex(
-        (item) => item.id === id,
-      );
-      const currentReply = originalPost?.replies![currentReplyIndex!];
+      const { post, postIndex, currentReply, currentReplyIndex } =
+        getCurrentReply(id);
+
       let updatedReply = {
         ...currentReply,
         content: textAreaRef.current?.value,
       };
-      const replies = originalPost?.replies;
-      replies![currentReplyIndex] = updatedReply;
+
+      const repliesList: unknown = post?.replies;
+      const replies = repliesList as PostProps;
+      replies[currentReplyIndex] = updatedReply;
       const posts = storedApp?.posts;
-      posts![originalPostIndex].replies = replies;
+      posts![postIndex].replies = replies;
       const data = {
         ...storedApp,
         posts: posts,

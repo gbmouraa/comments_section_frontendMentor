@@ -60,7 +60,7 @@ export const EditComment: React.FC<EditCommentProps> = ({
   };
 
   return (
-    <div className="md:absolute md:right-6 md:top-6">
+    <div className="flex md:absolute md:right-6 md:top-6">
       <AlertDialog>
         <AlertDialogTrigger asChild>
           <Button variant={"ghost"} className="px-2 hover:bg-transparent">
@@ -84,14 +84,24 @@ export const EditComment: React.FC<EditCommentProps> = ({
           </AlertDialogFooter>
         </AlertDialogContent>
       </AlertDialog>
-      <Button
-        variant="ghost"
-        className="px-2 text-indigo-400 transition-all hover:bg-transparent hover:text-indigo-400 hover:opacity-70"
-        onClick={() => handleEdit(id)}
-      >
-        <Pencil />
-        Edit
-      </Button>
+      {isEditing.postID !== id ? (
+        <Button
+          variant="ghost"
+          className="px-2 text-indigo-400 transition-all hover:bg-transparent hover:text-indigo-400 hover:opacity-70"
+          onClick={() => handleEdit(id)}
+        >
+          <Pencil />
+          Edit
+        </Button>
+      ) : (
+        <Button
+          variant="ghost"
+          className="px-2 text-indigo-400 transition-all hover:bg-transparent hover:text-indigo-400 hover:opacity-70"
+          onClick={() => setIsEditing({ active: false, postID: null })}
+        >
+          Cancel
+        </Button>
+      )}
     </div>
   );
 };

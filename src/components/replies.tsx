@@ -95,7 +95,7 @@ export const Replies: React.FC<PostProps> = ({
       animate={{ opacity: 1 }}
       transition={{ duration: 2 }}
     >
-      <Card className="max-w-[730px] bg-white text-zinc-500 dark:bg-[#2c2f33] dark:text-gray-200">
+      <Card className="min-h-[140px] max-w-[730px] bg-white text-zinc-500 dark:bg-[#2c2f33] dark:text-gray-200">
         <div className="md:max-w-[80%] md:translate-x-[64px]">
           <CardHeader>
             <CardTitle className="flex items-center gap-x-3">
@@ -115,11 +115,11 @@ export const Replies: React.FC<PostProps> = ({
                   </Badge>
                 )}
               </span>
-              <span className="text-sm font-thin">1 month ago</span>
+              <span className="truncate text-sm font-thin">1 month ago</span>
             </CardTitle>
           </CardHeader>
           {isEditing.active && isEditing.postID === id ? (
-            <div className="mx-auto max-w-[608px] translate-x-6">
+            <div className="w-[calc(100%-48px)] translate-x-6 md:mx-auto md:w-[calc(100%+12px)]">
               <Textarea defaultValue={content} ref={textAreaRef} />
               <Button
                 className="ml-auto mt-3 block bg-indigo-500 text-white dark:text-[#2c2f33]"
@@ -130,7 +130,7 @@ export const Replies: React.FC<PostProps> = ({
             </div>
           ) : (
             <CardContent>
-              <p>
+              <p className="inline-block w-[calc(100%-22px)] break-words">
                 <span className="text-indigo-400">@{replyingTo} </span>
                 {content}
               </p>

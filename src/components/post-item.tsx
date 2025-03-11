@@ -63,7 +63,7 @@ export const Post: React.FC<PostProps> = ({
 
   return (
     <motion.div
-      className="relative w-full max-w-[720px]"
+      className="relative max-w-[calc(100vw-32px)] md:max-w-[720px]"
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       transition={{ duration: 2 }}
@@ -92,7 +92,7 @@ export const Post: React.FC<PostProps> = ({
             </CardTitle>
           </CardHeader>
           {isEditing.active && isEditing.postID === id ? (
-            <div className="mx-auto max-w-[608px] translate-x-6">
+            <div className="mx-auto w-[calc(100%-48px)] md:max-w-[608px] md:translate-x-7">
               <Textarea defaultValue={content} ref={textAreaRef} />
               <Button
                 className="ml-auto mt-3 block bg-indigo-500 text-white dark:text-[#2c2f33]"
@@ -102,8 +102,8 @@ export const Post: React.FC<PostProps> = ({
               </Button>
             </div>
           ) : (
-            <CardContent className="md:w-[calc(100%-64px)] md:translate-x-[64px]">
-              <p className="">{content}</p>
+            <CardContent className="break-words md:w-[calc(100%-70px)] md:translate-x-[64px]">
+              {content}
             </CardContent>
           )}
         </div>

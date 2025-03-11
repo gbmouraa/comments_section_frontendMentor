@@ -4,9 +4,12 @@ import { Avatar, AvatarImage } from "./ui/avatar";
 import { motion } from "framer-motion";
 
 export const Profiles: React.FC = () => {
-  const { setStoredApp, storedApp } = useApp();
+  const { setStoredApp, storedApp, isEditing, setIsEditing } = useApp();
 
   const handleChangeUser = (user: { username: string; image: string }) => {
+    if (isEditing.active) {
+      setIsEditing({ active: false, postID: null });
+    }
     setStoredApp((prev) => ({
       ...prev,
       currentUser: user,

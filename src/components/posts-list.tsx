@@ -7,7 +7,7 @@ export const Posts: React.FC = () => {
   const { storedApp } = useApp();
   return (
     <div className="mt-10 flex -translate-y-5 flex-col items-center md:mt-6">
-      <ul>
+      <ul className="space-y-2">
         {storedApp?.posts &&
           storedApp.posts.map((item, idx) => {
             return (

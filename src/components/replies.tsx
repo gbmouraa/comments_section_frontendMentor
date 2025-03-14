@@ -122,10 +122,10 @@ export const Replies: React.FC<PostProps> = ({
             <div className="w-[calc(100%-48px)] translate-x-6 md:mx-auto md:w-[calc(100%+12px)]">
               <Textarea defaultValue={content} ref={textAreaRef} />
               <Button
-                className="ml-auto mt-3 block bg-indigo-500 text-white dark:text-[#2c2f33]"
+                className="ml-auto mt-3 block bg-indigo-500 hover:text-indigo-400 dark:text-white"
                 onClick={() => handleEdit(id)}
               >
-                Update
+                UPDATE
               </Button>
             </div>
           ) : (
@@ -140,7 +140,7 @@ export const Replies: React.FC<PostProps> = ({
         <CardFooter className="justify-between">
           <VotingButton score={score} user={user.username} />
           {storedApp?.currentUser?.username !== user.username ? (
-            <ReplyButton />
+            <ReplyButton id={id} />
           ) : (
             <EditComment id={id} replyingToUserID={replyingToUserID} />
           )}

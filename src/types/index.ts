@@ -17,6 +17,7 @@ export interface PostProps {
   score: number;
   replyingTo?: string;
   replyingToUserID?: number;
+  createdAt?: string;
 }
 
 export type CurrentUserType = {
@@ -31,10 +32,16 @@ export type isEditingType = {
   postID: number | null;
 };
 
+export interface IsReplyingProps {
+  replyingToPostID: number | null;
+}
+
 export type AppValueContext = {
   storedApp: StoredAppType | null;
   setStoredApp: React.Dispatch<React.SetStateAction<StoredAppType>>;
   isLoading: isLoadingType;
   isEditing: isEditingType;
   setIsEditing: React.Dispatch<React.SetStateAction<isEditingType>>;
+  isReplying: IsReplyingProps;
+  setIsReplying: React.Dispatch<React.SetStateAction<IsReplyingProps>>;
 };

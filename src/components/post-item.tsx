@@ -18,6 +18,7 @@ import { Replies } from "./replies";
 import { motion } from "framer-motion";
 import { Textarea } from "./ui/textarea";
 import { Button } from "./ui/button";
+import { AddReply } from "./add-reply";
 
 export const Post: React.FC<PostProps> = ({
   content,
@@ -26,7 +27,8 @@ export const Post: React.FC<PostProps> = ({
   score,
   id,
 }: PostProps) => {
-  const { storedApp, setStoredApp, isEditing, setIsEditing } = useApp();
+  const { storedApp, setStoredApp, isEditing, setIsEditing, isReplying } =
+    useApp();
   const textAreaRef = useRef<HTMLTextAreaElement>(null);
 
   useEffect(() => {
@@ -110,14 +112,14 @@ export const Post: React.FC<PostProps> = ({
         <CardFooter className="justify-between">
           <VotingButton score={score} user={user.username} />
           {storedApp?.currentUser?.username !== user.username ? (
-            <ReplyButton />
+            <ReplyButton id={id} />
           ) : (
             <EditComment id={id} />
           )}
         </CardFooter>
       </Card>
       {replies ? (
-        <ul className="ml-auto mt-2 w-[95%] space-y-3 border-l-2 dark:border-neutral-700">
+        <ul className="ml-auto mt-2 w-[95%] space-y-2 border-l-2 dark:border-neutral-700">
           {replies.map((item) => (
             <li key={item.id} className="ml-auto w-[95%]">
               <Replies
@@ -134,6 +136,9 @@ export const Post: React.FC<PostProps> = ({
         </ul>
       ) : (
         <></>
+      )}
+      {isReplying.replyingToPostID === id && (
+        <AddReply replyingTo={user.username} id={id} />
       )}
     </motion.div>
   );

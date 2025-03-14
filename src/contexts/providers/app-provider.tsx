@@ -1,11 +1,14 @@
 import React, { useEffect, useState } from "react";
 import { AppContext } from "../app-context";
-import { StoredAppType } from "@/types";
-import { isEditingType } from "@/types";
+import { StoredAppType, isEditingType, IsReplyingProps } from "@/types";
+
 import { api } from "@/api";
 
 export const AppProvider = ({ children }: { children: React.ReactNode }) => {
   const [isLoading, setIsLoading] = useState(true);
+  const [isReplying, setIsReplying] = useState<IsReplyingProps>({
+    replyingToPostID: null,
+  });
   const [isEditing, setIsEditing] = useState<isEditingType>({
     active: false,
     postID: null,
@@ -31,7 +34,7 @@ export const AppProvider = ({ children }: { children: React.ReactNode }) => {
     };
   });
 
-  // only to show loading animation '-'
+  // only to show loading animation
   const delay = () => {
     setTimeout(() => {
       setIsLoading(false);
@@ -76,6 +79,8 @@ export const AppProvider = ({ children }: { children: React.ReactNode }) => {
         isLoading,
         isEditing,
         setIsEditing,
+        isReplying,
+        setIsReplying,
       }}
     >
       {children}

@@ -3,6 +3,7 @@ import { SwitchTheme } from "./components/switch-theme";
 import { Profiles } from "./components/profiles";
 import { Posts } from "./components/posts-list";
 import { Loader } from "./components/loader";
+import { AddPost } from "./components/add-post";
 
 export const App: React.FC = () => {
   const { isLoading } = useApp();
@@ -16,6 +17,7 @@ export const App: React.FC = () => {
           <SwitchTheme />
           <Posts />
           <Profiles />
+          <AddPost />
         </div>
       )}
     </>

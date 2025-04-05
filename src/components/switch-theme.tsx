@@ -5,24 +5,14 @@ import { Label } from "./ui/label";
 
 export const SwitchTheme: React.FC = () => {
   const [darkModeIsSelected, setDarkModeIsSelected] = useState<boolean>(false);
-  const { storedApp, setStoredApp } = useApp();
+  const { storedApp, changeStoredApp } = useApp();
 
   useEffect(() => {
     if (storedApp?.theme === "dark") {
-      const data = {
-        ...storedApp,
-        theme: "dark",
-      };
-      localStorage.setItem("@postApp", JSON.stringify(data));
       document.documentElement.classList.add("dark");
       document.documentElement.classList.remove("light");
       setDarkModeIsSelected(true);
     } else {
-      const data = {
-        ...storedApp,
-        theme: "light",
-      };
-      localStorage.setItem("@postApp", JSON.stringify(data));
       document.documentElement.classList.add("light");
       document.documentElement.classList.remove("dark");
       setDarkModeIsSelected(false);
@@ -32,15 +22,9 @@ export const SwitchTheme: React.FC = () => {
   const handleChange = (isActive: boolean) => {
     setDarkModeIsSelected(isActive);
     if (isActive) {
-      setStoredApp((prev) => ({
-        ...prev,
-        theme: "dark",
-      }));
+      changeStoredApp("theme", "dark");
     } else {
-      setStoredApp((prev) => ({
-        ...prev,
-        theme: "light",
-      }));
+      changeStoredApp("theme", "light");
     }
   };
 

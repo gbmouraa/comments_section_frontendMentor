@@ -1,20 +1,30 @@
-import React, { useEffect, useState } from "react";
-import { AppContext } from "../app-context";
-import { StoredAppType, isEditingType, IsReplyingProps } from "@/types";
-
+import { ReactNode, useEffect, useState } from "react";
+import {
+  AppContext,
+  IsReplyingProps,
+  StoredAppData,
+  isEditingProps,
+  isLoading,
+} from "./app-context";
 import { api } from "@/api";
 
-export const AppProvider = ({ children }: { children: React.ReactNode }) => {
-  const [isLoading, setIsLoading] = useState(true);
+interface AppProviderProps {
+  children: ReactNode;
+}
+
+export const AppProvider = ({ children }: AppProviderProps) => {
+  const [isLoading, setIsLoading] = useState<isLoading>(true);
   const [isReplying, setIsReplying] = useState<IsReplyingProps>({
+    active: false,
     replyingToPostID: null,
+    userNames: [],
   });
-  const [isEditing, setIsEditing] = useState<isEditingType>({
+  const [isEditing, setIsEditing] = useState<isEditingProps>({
     active: false,
     postID: null,
   });
 
-  const [storedApp, setStoredApp] = useState<StoredAppType>(() => {
+  const [storedApp, setStoredApp] = useState<StoredAppData>(() => {
     const storedData = localStorage.getItem("@postApp");
     if (storedData) {
       return JSON.parse(storedData);
@@ -40,6 +50,10 @@ export const AppProvider = ({ children }: { children: React.ReactNode }) => {
       setIsLoading(false);
     }, 2000);
   };
+
+  useEffect(() => {
+    localStorage.setItem("@postApp", JSON.stringify(storedApp));
+  }, [storedApp]);
 
   useEffect(() => {
     const getPosts = async () => {
@@ -71,16 +85,39 @@ export const AppProvider = ({ children }: { children: React.ReactNode }) => {
     getPosts();
   }, []);
 
+  const changeStoredApp = (key: string, value: any) => {
+    setStoredApp((prev) => ({
+      ...prev,
+      [key]: value,
+    }));
+  };
+
+  const changeIsEditing = (id: number) => {
+    setIsEditing({ active: !isEditing.active, postID: id });
+  };
+
+  const changeIsReplying = (
+    active: boolean,
+    id: number,
+    usernames: string[],
+  ) => {
+    setIsReplying({
+      active: active,
+      replyingToPostID: id,
+      userNames: usernames,
+    });
+  };
+
   return (
     <AppContext.Provider
       value={{
         storedApp,
-        setStoredApp,
+        changeStoredApp,
         isLoading,
         isEditing,
-        setIsEditing,
+        changeIsEditing,
         isReplying,
-        setIsReplying,
+        changeIsReplying,
       }}
     >
       {children}

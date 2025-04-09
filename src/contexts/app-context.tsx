@@ -7,19 +7,19 @@ export interface StoredAppData {
   posts: PostProps[] | null;
 }
 
-interface PostProps {
+export interface PostProps {
   content: string;
   id: number;
   user: {
     image: string;
     username: string;
   };
-  replies: Reply;
+  replies: ReplyProps[];
   score: number;
   createdAt?: string;
 }
 
-interface Reply {
+export interface ReplyProps {
   content: string;
   id: number;
   user: {
@@ -28,8 +28,8 @@ interface Reply {
   };
   score: number;
   replyingTo: string[];
-  replyindToPostID: number;
-  createdAt?: string;
+  replyingToPostID: number;
+  createdAt?: Date;
 }
 
 interface CurrentUserProps {
@@ -38,16 +38,16 @@ interface CurrentUserProps {
 }
 
 export interface isEditingProps {
-  active: true | false;
+  active: boolean;
   postID: number | null;
 }
 
-export type isLoading = true | false;
+export type isLoading = boolean;
 
 export interface IsReplyingProps {
-  active: true | false;
-  replyingToPostID: number | null;
-  userNames: string[];
+  active: boolean;
+  replyingToCommentID: number | null;
+  usernames: string[] | null;
 }
 
 export type AppContextData = {
@@ -55,9 +55,13 @@ export type AppContextData = {
   changeStoredApp: (key: string, value: any) => void;
   isLoading: isLoading;
   isEditing: isEditingProps;
-  changeIsEditing: (id: number) => void;
+  changeIsEditing: (active: boolean, id: number | null) => void;
   isReplying: IsReplyingProps;
-  changeIsReplying: (active: boolean, id: number, usernames: string[]) => void;
+  changeIsReplying: (
+    active: boolean,
+    id: number | null,
+    usernames: string[] | null,
+  ) => void;
 };
 
 export const AppContext = createContext({} as AppContextData);

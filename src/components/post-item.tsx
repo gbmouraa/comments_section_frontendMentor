@@ -10,7 +10,6 @@ import {
 import { Badge } from "./ui/badge";
 import { Avatar, AvatarFallback, AvatarImage } from "@radix-ui/react-avatar";
 import { VotingButton } from "./voting-button";
-import { PostProps } from "@/types";
 import { ReplyButton } from "./reply-button";
 import { useApp } from "@/hooks/useApp";
 import { EditComment } from "./edit-comment";
@@ -19,6 +18,7 @@ import { motion } from "framer-motion";
 import { Textarea } from "./ui/textarea";
 import { Button } from "./ui/button";
 import { AddReply } from "./add-reply";
+import { PostProps } from "../contexts/app-context";
 
 export const Post: React.FC<PostProps> = ({
   content,
@@ -27,7 +27,7 @@ export const Post: React.FC<PostProps> = ({
   score,
   id,
 }: PostProps) => {
-  const { storedApp, setStoredApp, isEditing, setIsEditing, isReplying } =
+  const { storedApp, changeStoredApp, isEditing, changeIsEditing, isReplying } =
     useApp();
   const textAreaRef = useRef<HTMLTextAreaElement>(null);
 
@@ -43,23 +43,23 @@ export const Post: React.FC<PostProps> = ({
   }, [isEditing]);
 
   const handleEdit = (id: number) => {
-    if (textAreaRef.current?.value !== "") {
-      const updatedPost = textAreaRef.current?.value;
-      const postIndex = storedApp?.posts?.findIndex((post) => post.id === id);
-      let posts = storedApp?.posts;
-      posts![postIndex!].content = updatedPost!;
-      const data = {
-        ...storedApp,
-        posts: posts,
-      };
-      setStoredApp((prev) => ({
-        ...prev,
-        posts: posts,
-      }));
+    changeIsEditing(true, id);
 
-      localStorage.setItem("@postApp", JSON.stringify(data));
+    const posts = storedApp.posts;
+    const postIndex = posts?.findIndex((post) => post.id === id);
 
-      setIsEditing({ active: false, postID: null });
+    if (
+      typeof postIndex === "number" &&
+      postIndex >= 0 &&
+      textAreaRef.current?.value !== "" &&
+      posts
+    ) {
+      const updatedPost = textAreaRef.current!.value;
+      const updatedPosts = [...posts];
+      updatedPosts[postIndex].content = updatedPost;
+
+      changeStoredApp("posts", updatedPosts);
+      changeIsEditing(false, null);
     }
   };
 
@@ -112,7 +112,7 @@ export const Post: React.FC<PostProps> = ({
         <CardFooter className="justify-between">
           <VotingButton score={score} user={user.username} />
           {storedApp?.currentUser?.username !== user.username ? (
-            <ReplyButton id={id} />
+            <ReplyButton id={id} users={[user.username]} />
           ) : (
             <EditComment id={id} />
           )}
@@ -120,16 +120,15 @@ export const Post: React.FC<PostProps> = ({
       </Card>
       {replies ? (
         <ul className="ml-auto mt-2 w-[95%] space-y-2 border-l-2 dark:border-neutral-700">
-          {replies.map((item) => (
-            <li key={item.id} className="ml-auto w-[95%]">
+          {replies.map((item, idx) => (
+            <li key={idx} className="ml-auto w-[95%]">
               <Replies
                 content={item.content}
                 id={item.id}
                 user={item.user}
-                replies={item.replies}
                 score={item.score}
                 replyingTo={item.replyingTo}
-                replyingToUserID={id}
+                replyingToPostID={id}
               />
             </li>
           ))}
@@ -137,8 +136,8 @@ export const Post: React.FC<PostProps> = ({
       ) : (
         <></>
       )}
-      {isReplying.replyingToPostID === id && (
-        <AddReply replyingTo={user.username} id={id} />
+      {isReplying.replyingToCommentID === id && (
+        <AddReply replyingTo={[user.username]} id={id} />
       )}
     </motion.div>
   );

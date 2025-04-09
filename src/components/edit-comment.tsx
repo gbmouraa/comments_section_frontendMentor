@@ -15,48 +15,36 @@ import { useApp } from "@/hooks/useApp";
 
 interface EditCommentProps {
   id: number;
-  replyingToUserID?: number;
+  replyingToPostID?: number;
 }
 
 export const EditComment: React.FC<EditCommentProps> = ({
   id,
-  replyingToUserID,
+  replyingToPostID,
 }: EditCommentProps) => {
-  const { storedApp, setStoredApp, setIsEditing, isEditing } = useApp();
+  const { storedApp, changeStoredApp, changeIsEditing, isEditing } = useApp();
 
   const handleDelete = () => {
-    // if the post is a reply
-    if (replyingToUserID) {
-      const originalPostIndex = storedApp!.posts?.findIndex(
-        (item) => item.id === replyingToUserID,
+    if (replyingToPostID) {
+      const postIdx = storedApp.posts?.findIndex(
+        (item) => item.id === replyingToPostID,
       );
-      const originalPost = storedApp?.posts![originalPostIndex!];
-      const updatedReplies = originalPost!.replies.filter(
-        (item) => item.id !== id,
-      );
-      originalPost!.replies = updatedReplies;
-      const posts = storedApp?.posts!;
-      posts[originalPostIndex] = originalPost;
-      setStoredApp((prev) => ({
-        ...prev,
-        posts: posts,
-      }));
-      const updatedData = { ...storedApp, posts: posts };
-      localStorage.setItem("@postApp", JSON.stringify(updatedData));
+      const post = storedApp.posts![Number(postIdx)];
+      let replies = post.replies;
+      replies = replies.filter((item) => item.id !== id);
+      post.replies = replies;
+      const updatedPost = storedApp.posts;
+      updatedPost![Number(postIdx)] = post;
+      changeStoredApp("posts", updatedPost);
       return;
     }
 
-    let updatedPosts = storedApp?.posts?.filter((item) => item.id !== id);
-    setStoredApp((prev) => ({
-      ...prev,
-      posts: updatedPosts,
-    }));
-    const updatedData = { ...storedApp, posts: updatedPosts };
-    localStorage.setItem("@postApp", JSON.stringify(updatedData));
+    const updatedPosts = storedApp?.posts?.filter((item) => item.id !== id);
+    changeStoredApp("posts", updatedPosts);
   };
 
   const handleEdit = (id: number) => {
-    setIsEditing({ active: !isEditing.active, postID: id });
+    changeIsEditing(true, id);
   };
 
   return (
@@ -97,7 +85,7 @@ export const EditComment: React.FC<EditCommentProps> = ({
         <Button
           variant="ghost"
           className="px-2 text-indigo-400 transition-all hover:bg-transparent hover:text-indigo-400 hover:opacity-70"
-          onClick={() => setIsEditing({ active: false, postID: null })}
+          onClick={() => changeIsEditing(false, null)}
         >
           Cancel
         </Button>

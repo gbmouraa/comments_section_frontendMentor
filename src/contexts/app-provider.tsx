@@ -16,8 +16,8 @@ export const AppProvider = ({ children }: AppProviderProps) => {
   const [isLoading, setIsLoading] = useState<isLoading>(true);
   const [isReplying, setIsReplying] = useState<IsReplyingProps>({
     active: false,
-    replyingToPostID: null,
-    userNames: [],
+    replyingToCommentID: null,
+    usernames: null,
   });
   const [isEditing, setIsEditing] = useState<isEditingProps>({
     active: false,
@@ -55,6 +55,7 @@ export const AppProvider = ({ children }: AppProviderProps) => {
     localStorage.setItem("@postApp", JSON.stringify(storedApp));
   }, [storedApp]);
 
+  // fetch data
   useEffect(() => {
     const getPosts = async () => {
       if (storedApp.alreadyStored) {
@@ -92,19 +93,19 @@ export const AppProvider = ({ children }: AppProviderProps) => {
     }));
   };
 
-  const changeIsEditing = (id: number) => {
-    setIsEditing({ active: !isEditing.active, postID: id });
+  const changeIsEditing = (active: boolean, id: number | null) => {
+    setIsEditing({ active: active, postID: id });
   };
 
   const changeIsReplying = (
     active: boolean,
-    id: number,
-    usernames: string[],
+    id: number | null,
+    usernames: string[] | null,
   ) => {
     setIsReplying({
       active: active,
-      replyingToPostID: id,
-      userNames: usernames,
+      replyingToCommentID: id,
+      usernames: usernames,
     });
   };
 

@@ -4,23 +4,26 @@ import { Avatar, AvatarImage } from "./ui/avatar";
 import { motion } from "framer-motion";
 
 export const Profiles: React.FC = () => {
-  const { setStoredApp, storedApp, isEditing, setIsEditing } = useApp();
+  const {
+    changeStoredApp,
+    storedApp,
+    isEditing,
+    changeIsEditing,
+    isReplying,
+    changeIsReplying,
+  } = useApp();
 
   const handleChangeUser = (user: { username: string; image: string }) => {
+    // removes edition mode if is active on profiler change
     if (isEditing.active) {
-      setIsEditing({ active: false, postID: null });
+      changeIsEditing(false, null);
     }
-    setStoredApp((prev) => ({
-      ...prev,
-      currentUser: user,
-    }));
 
-    const data = {
-      ...storedApp,
-      currentUser: user,
-    };
+    if (isReplying.active) {
+      changeIsReplying(false, null, null);
+    }
 
-    localStorage.setItem("@postApp", JSON.stringify(data));
+    changeStoredApp("currentUser", user);
   };
 
   return (

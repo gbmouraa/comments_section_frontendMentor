@@ -4,60 +4,45 @@ import { Button } from "./ui/button";
 import { useApp } from "@/hooks/useApp";
 import { Card } from "./ui/card";
 import { Textarea } from "./ui/textarea";
-import { PostProps } from "@/types";
+import { ReplyProps } from "@/contexts/app-context";
 
 interface AddReplyProps {
-  replyingTo: string;
+  replyingTo: string[];
   // id of the post being replied to
   id: number;
 }
 
 export const AddReply: React.FC<AddReplyProps> = ({ replyingTo, id }) => {
   const [text, setText] = useState("");
-  const { storedApp, setStoredApp, setIsReplying } = useApp();
+  const { storedApp, changeStoredApp, changeIsReplying } = useApp();
   const user = storedApp?.currentUser;
 
   const findPost = () => {
-    const post = storedApp?.posts?.find((item) => item.id === id);
+    const post = storedApp.posts?.find((item) => item.id === id);
     return post;
-  };
-
-  const updatePostReplies = (updatedPost) => {
-    const postIndex = storedApp?.posts?.findIndex((item) => item.id === id);
-    const idx = postIndex as number;
-    const posts = storedApp?.posts;
-    posts![idx] = updatedPost;
-
-    setStoredApp((prev) => ({
-      ...prev,
-      posts: posts,
-    }));
-
-    const updatedStorage = { ...storedApp, posts: posts };
-    localStorage.setItem("@postApp", JSON.stringify(updatedStorage));
-    setIsReplying({ replyingToPostID: null });
   };
 
   const handleSubmit = () => {
     const post = findPost();
+    const postsList = storedApp.posts;
     const content: string = text;
 
-    const reply: PostProps = {
+    const reply: ReplyProps = {
       content: content,
-      id: Math.floor(Math.random() * 100),
-      replies: [],
+      id: Date.now(),
       score: 0,
       user: {
-        image: storedApp?.currentUser?.image!,
-        username: storedApp?.currentUser?.username!,
+        image: storedApp.currentUser.image,
+        username: storedApp.currentUser.username,
       },
-      createdAt: "now",
+      createdAt: new Date(),
       replyingTo: replyingTo,
-      replyingToUserID: id,
+      replyingToPostID: id,
     };
 
     post?.replies.push(reply);
-    updatePostReplies(post);
+    changeStoredApp("posts", postsList);
+    changeIsReplying(false, null, null);
   };
 
   return (
@@ -73,7 +58,7 @@ export const AddReply: React.FC<AddReplyProps> = ({ replyingTo, id }) => {
           <Button onClick={handleSubmit}>SEND</Button>
           <Button
             variant={"ghost"}
-            onClick={() => setIsReplying({ replyingToPostID: null })}
+            onClick={() => changeIsReplying(false, null, null)}
           >
             Cancel
           </Button>

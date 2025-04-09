@@ -1,6 +1,5 @@
 import { useRef, useEffect } from "react";
 import { motion } from "framer-motion";
-import { PostProps } from "@/types";
 import { Avatar, AvatarImage, AvatarFallback } from "@radix-ui/react-avatar";
 import { ReplyButton } from "./reply-button";
 import { Badge } from "./ui/badge";
@@ -16,17 +15,17 @@ import {
 import { useApp } from "@/hooks/useApp";
 import { Button } from "./ui/button";
 import { Textarea } from "./ui/textarea";
+import { ReplyProps } from "@/contexts/app-context";
 
-export const Replies: React.FC<PostProps> = ({
+export const Replies: React.FC<ReplyProps> = ({
   id,
   content,
   user,
-  replies,
   score,
   replyingTo,
-  replyingToUserID,
-}: PostProps) => {
-  const { storedApp, setStoredApp, isEditing, setIsEditing } = useApp();
+  replyingToPostID,
+}: ReplyProps) => {
+  const { storedApp, isEditing, changeStoredApp, changeIsEditing } = useApp();
   const textAreaRef = useRef<HTMLTextAreaElement>(null);
 
   useEffect(() => {
@@ -40,51 +39,23 @@ export const Replies: React.FC<PostProps> = ({
     handleFocus();
   }, [isEditing]);
 
-  // we are editing a comment/reply on this post,this function
-  // is used to find the respective post in the list of posts
-  const getPost = () => {
-    const postIndex = storedApp!.posts?.findIndex(
-      (item) => item.id === replyingToUserID,
+  const handleEditReply = (id: number) => {
+    const postIdx = storedApp.posts?.findIndex(
+      (item) => item.id === replyingToPostID,
     );
-    const post = storedApp?.posts![postIndex!];
-    return { post, postIndex };
-  };
 
-  const getCurrentReply = (id: number) => {
-    const { post, postIndex } = getPost();
-    const index: unknown = post?.replies.findIndex((item) => item.id === id);
-    const currentReplyIndex = index as number;
-    const currentReply = post?.replies[currentReplyIndex];
-    return { post, postIndex, currentReplyIndex, currentReply };
-  };
+    const post = storedApp.posts![Number(postIdx)];
+    const replyIdx = post.replies.findIndex((item) => item.id === id);
+    const reply = post.replies[replyIdx];
 
-  const handleEdit = (id: number) => {
     if (textAreaRef.current?.value !== "") {
-      const { post, postIndex, currentReply, currentReplyIndex } =
-        getCurrentReply(id);
-
-      let updatedReply = {
-        ...currentReply,
-        content: textAreaRef.current?.value,
-      };
-
-      const repliesList: unknown = post?.replies;
-      const replies = repliesList as PostProps;
-      replies[currentReplyIndex] = updatedReply;
-      const posts = storedApp?.posts;
-      posts![postIndex].replies = replies;
-      const data = {
-        ...storedApp,
-        posts: posts,
-      };
-      setStoredApp((prev) => ({
-        ...prev,
-        posts: posts,
-      }));
-
-      localStorage.setItem("@postApp", JSON.stringify(data));
-
-      setIsEditing({ active: false, postID: null });
+      reply.content = textAreaRef.current!.value;
+      post.replies[replyIdx] = reply;
+      const updatedPosts = storedApp.posts;
+      updatedPosts![Number(postIdx)] = post;
+      console.log(updatedPosts);
+      changeStoredApp("posts", updatedPosts);
+      changeIsEditing(false, null);
     }
   };
 
@@ -123,7 +94,7 @@ export const Replies: React.FC<PostProps> = ({
               <Textarea defaultValue={content} ref={textAreaRef} />
               <Button
                 className="ml-auto mt-3 block bg-indigo-500 hover:text-indigo-400 dark:text-white"
-                onClick={() => handleEdit(id)}
+                onClick={() => handleEditReply(id)}
               >
                 UPDATE
               </Button>
@@ -140,31 +111,12 @@ export const Replies: React.FC<PostProps> = ({
         <CardFooter className="justify-between">
           <VotingButton score={score} user={user.username} />
           {storedApp?.currentUser?.username !== user.username ? (
-            <ReplyButton id={id} />
+            <ReplyButton id={id} users={[...replyingTo, user.username]} />
           ) : (
-            <EditComment id={id} replyingToUserID={replyingToUserID} />
+            <EditComment id={id} replyingToPostID={replyingToPostID} />
           )}
         </CardFooter>
       </Card>
-      {replies ? (
-        <ul className="ml-auto mt-2 w-[95%] space-y-3 border-l-2 dark:border-neutral-700">
-          {replies.map((item) => (
-            <li key={item.id} className="ml-auto w-[95%]">
-              <Replies
-                content={item.content}
-                id={item.id}
-                user={item.user}
-                replies={item.replies}
-                score={item.score}
-                replyingTo={item.replyingTo}
-                replyingToUserID={id}
-              />
-            </li>
-          ))}
-        </ul>
-      ) : (
-        <></>
-      )}
     </motion.div>
   );
 };

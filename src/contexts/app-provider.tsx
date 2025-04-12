@@ -37,7 +37,7 @@ export const AppProvider = ({ children }: AppProviderProps) => {
       // this property serves as a flag so that data is not fetched unnecessarily
       // you can see the usage in useEffect
       alreadyStored: false,
-      theme: "dark",
+      theme: "light",
       currentUser: {
         username: "juliusomo",
         image:

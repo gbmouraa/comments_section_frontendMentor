@@ -20,14 +20,14 @@ export const Profiles: React.FC = () => {
     }
 
     if (isReplying.active) {
-      changeIsReplying(false, null, null);
+      changeIsReplying(false, null, null, null);
     }
 
     changeStoredApp("currentUser", user);
   };
 
   return (
-    <div className="absolute right-4 top-4 md:right-4">
+    <div className="absolute right-4 top-4 md:fixed md:right-4">
       <ul className="right-4 top-4 flex gap-2 md:flex-col">
         {users.map((user, idx) => (
           <motion.li

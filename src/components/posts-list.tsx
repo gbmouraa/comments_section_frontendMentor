@@ -8,11 +8,12 @@ export const Posts: React.FC = () => {
 
   return (
     <div className="mt-10 flex -translate-y-5 flex-col items-center md:mt-6">
-      <ul className="space-y-2">
+      <ul className="flex w-full flex-col items-center">
         {storedApp?.posts &&
           storedApp?.posts.map((item, idx) => {
             return (
               <motion.li
+                className="flex w-full justify-center"
                 key={item.id}
                 initial={{ opacity: 0, y: 20, scale: 0 }}
                 animate={{ opacity: 1, y: 0, scale: 1 }}

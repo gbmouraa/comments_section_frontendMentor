@@ -65,14 +65,14 @@ export const Post: React.FC<PostProps> = ({
 
   return (
     <motion.div
-      className="relative max-w-[calc(100vw-32px)] md:max-w-[720px]"
+      className="relative w-full max-w-[720px]"
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       transition={{ duration: 2 }}
     >
       <Card className="min-h-[140px] bg-white text-zinc-500 dark:bg-[#2c2f33] dark:text-gray-200">
-        <div className="">
-          <CardHeader className="md:w-[calc(100%-64px)] md:translate-x-[64px]">
+        <div>
+          <CardHeader className="w-fit md:translate-x-[64px]">
             <CardTitle className="flex items-center gap-x-3">
               <Avatar>
                 <AvatarImage
@@ -121,7 +121,7 @@ export const Post: React.FC<PostProps> = ({
       {replies ? (
         <ul className="ml-auto mt-2 w-[95%] space-y-2 border-l-2 dark:border-neutral-700">
           {replies.map((item, idx) => (
-            <li key={idx} className="ml-auto w-[95%]">
+            <li key={idx} className="w-full pl-[14px] md:pl-10">
               <Replies
                 content={item.content}
                 id={item.id}

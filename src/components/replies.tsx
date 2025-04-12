@@ -66,7 +66,7 @@ export const Replies: React.FC<ReplyProps> = ({
 
   return (
     <motion.div
-      className="relative min-w-full"
+      className="relative mb-2 ml-auto min-w-full"
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       transition={{ duration: 2 }}

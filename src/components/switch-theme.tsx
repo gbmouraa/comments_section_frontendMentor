@@ -29,7 +29,7 @@ export const SwitchTheme: React.FC = () => {
   };
 
   return (
-    <div className="mt-3 flex w-fit items-center gap-x-2 md:mt-0">
+    <div className="left-4 top-4 z-10 mt-3 flex w-fit items-center gap-x-2 md:mt-0 xl:fixed">
       <Switch
         id="dark-mode"
         checked={darkModeIsSelected}

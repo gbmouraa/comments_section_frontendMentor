@@ -37,16 +37,22 @@ export const AddPost: React.FC = () => {
   };
 
   return (
-    <motion.div className="mx-auto max-w-[calc(100vw-32px)] -translate-y-[18px] md:max-w-[720px]">
-      <Card className="flex min-h-[140px] gap-3 bg-white p-6 text-zinc-500 dark:bg-[#2c2f33] dark:text-gray-200">
+    <div className="mx-auto w-full max-w-[720px] -translate-y-[20px]">
+      <Card className="flex min-h-[140px] flex-wrap gap-3 bg-white p-6 text-zinc-500 dark:bg-[#2c2f33] dark:text-gray-200 sm:flex-nowrap">
         <img
           src={user?.image}
           alt="User image"
           className="h-11 w-11 rounded-full"
         />
-        <Textarea value={text} onChange={(e) => setText(e.target.value)} />
-        <Button onClick={handleSubmit}>SEND</Button>
+        <Textarea
+          value={text}
+          onChange={(e) => setText(e.target.value)}
+          className="min-w-[220px]"
+        />
+        <Button onClick={handleSubmit} className="ml-auto">
+          SEND
+        </Button>
       </Card>
-    </motion.div>
+    </div>
   );
 };

@@ -45,19 +45,22 @@ export const AddReply: React.FC<AddReplyProps> = ({ id }) => {
   };
 
   return (
-    <div className="ml-auto w-[95%] border-l-2 dark:border-neutral-700 md:max-w-[720px]">
-      <Card className="ml-auto flex min-h-[140px] w-[95%] gap-3 bg-white p-6 text-zinc-500 dark:bg-[#2c2f33] dark:text-gray-200">
+    <div className="mb-2 ml-auto w-[95%] border-l-2 pl-[14px] dark:border-neutral-700 md:max-w-[720px] md:pl-10">
+      <Card className="ml-auto flex min-h-[140px] w-full flex-wrap gap-3 bg-white p-6 text-zinc-500 dark:bg-[#2c2f33] dark:text-gray-200 sm:flex-nowrap">
         <img
           src={user?.image}
           alt="User image"
           className="h-11 w-11 rounded-full"
         />
         <Textarea value={text} onChange={(e) => setText(e.target.value)} />
-        <div className="flex flex-col justify-between">
-          <Button onClick={handleSubmit}>SEND</Button>
+        <div className="ml-auto flex justify-between sm:ml-0 sm:flex-col">
+          <Button onClick={handleSubmit} className="sm:order-0 order-1">
+            SEND
+          </Button>
           <Button
             variant={"ghost"}
             onClick={() => changeIsReplying(false, null, null, null)}
+            className="order-0 sm:order-1"
           >
             Cancel
           </Button>

@@ -7,14 +7,13 @@ import { Textarea } from "./ui/textarea";
 import { ReplyProps } from "@/contexts/app-context";
 
 interface AddReplyProps {
-  replyingTo: string[];
   // id of the post being replied to
   id: number;
 }
 
-export const AddReply: React.FC<AddReplyProps> = ({ replyingTo, id }) => {
+export const AddReply: React.FC<AddReplyProps> = ({ id }) => {
   const [text, setText] = useState("");
-  const { storedApp, changeStoredApp, changeIsReplying } = useApp();
+  const { storedApp, changeStoredApp, changeIsReplying, isReplying } = useApp();
   const user = storedApp?.currentUser;
 
   const findPost = () => {
@@ -36,13 +35,13 @@ export const AddReply: React.FC<AddReplyProps> = ({ replyingTo, id }) => {
         username: storedApp.currentUser.username,
       },
       createdAt: new Date(),
-      replyingTo: replyingTo,
+      replyingTo: isReplying.usernames!,
       replyingToPostID: id,
     };
 
     post?.replies.push(reply);
     changeStoredApp("posts", postsList);
-    changeIsReplying(false, null, null);
+    changeIsReplying(false, null, null, null);
   };
 
   return (
@@ -58,7 +57,7 @@ export const AddReply: React.FC<AddReplyProps> = ({ replyingTo, id }) => {
           <Button onClick={handleSubmit}>SEND</Button>
           <Button
             variant={"ghost"}
-            onClick={() => changeIsReplying(false, null, null)}
+            onClick={() => changeIsReplying(false, null, null, null)}
           >
             Cancel
           </Button>

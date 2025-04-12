@@ -18,6 +18,9 @@ export const AppProvider = ({ children }: AppProviderProps) => {
     active: false,
     replyingToCommentID: null,
     usernames: null,
+    // reply of other reply
+    replyId: null,
+    id: null,
   });
   const [isEditing, setIsEditing] = useState<isEditingProps>({
     active: false,
@@ -65,7 +68,7 @@ export const AppProvider = ({ children }: AppProviderProps) => {
 
       try {
         const response = await api.get(
-          "https://api.npoint.io/8e4dc755152838e6e772",
+          "https://api.npoint.io/44038e3c0e3f06e0006f",
         );
 
         let data = {
@@ -101,11 +104,14 @@ export const AppProvider = ({ children }: AppProviderProps) => {
     active: boolean,
     id: number | null,
     usernames: string[] | null,
+    replyID: number | null,
   ) => {
     setIsReplying({
       active: active,
       replyingToCommentID: id,
       usernames: usernames,
+      replyId: replyID,
+      id: id,
     });
   };
 

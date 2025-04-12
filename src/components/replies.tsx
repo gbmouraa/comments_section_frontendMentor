@@ -27,6 +27,12 @@ export const Replies: React.FC<ReplyProps> = ({
 }: ReplyProps) => {
   const { storedApp, isEditing, changeStoredApp, changeIsEditing } = useApp();
   const textAreaRef = useRef<HTMLTextAreaElement>(null);
+  const userNames = replyingTo.map((item) => {
+    let username = "@" + item;
+    return username;
+  });
+
+  const formatedUserNames = userNames.join(" ");
 
   useEffect(() => {
     const handleFocus = () => {
@@ -53,7 +59,6 @@ export const Replies: React.FC<ReplyProps> = ({
       post.replies[replyIdx] = reply;
       const updatedPosts = storedApp.posts;
       updatedPosts![Number(postIdx)] = post;
-      console.log(updatedPosts);
       changeStoredApp("posts", updatedPosts);
       changeIsEditing(false, null);
     }
@@ -102,7 +107,7 @@ export const Replies: React.FC<ReplyProps> = ({
           ) : (
             <CardContent>
               <p className="inline-block w-[calc(100%-22px)] break-words">
-                <span className="text-indigo-400">@{replyingTo} </span>
+                <span className="text-indigo-400">{formatedUserNames} </span>
                 {content}
               </p>
             </CardContent>
@@ -111,7 +116,11 @@ export const Replies: React.FC<ReplyProps> = ({
         <CardFooter className="justify-between">
           <VotingButton score={score} user={user.username} />
           {storedApp?.currentUser?.username !== user.username ? (
-            <ReplyButton id={id} users={[...replyingTo, user.username]} />
+            <ReplyButton
+              id={id}
+              users={[...replyingTo, user.username]}
+              isReply={{ originalPostID: replyingToPostID, replyID: id }}
+            />
           ) : (
             <EditComment id={id} replyingToPostID={replyingToPostID} />
           )}

@@ -48,6 +48,9 @@ export interface IsReplyingProps {
   active: boolean;
   replyingToCommentID: number | null;
   usernames: string[] | null;
+  // replying to other reply
+  replyId: number | null;
+  id: number | null;
 }
 
 export type AppContextData = {
@@ -61,6 +64,8 @@ export type AppContextData = {
     active: boolean,
     id: number | null,
     usernames: string[] | null,
+    // replying to other reply
+    replyId: number | null,
   ) => void;
 };
 

@@ -136,9 +136,7 @@ export const Post: React.FC<PostProps> = ({
       ) : (
         <></>
       )}
-      {isReplying.replyingToCommentID === id && (
-        <AddReply replyingTo={[user.username]} id={id} />
-      )}
+      {isReplying.replyingToCommentID === id && <AddReply id={id} />}
     </motion.div>
   );
 };

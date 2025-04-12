@@ -4,10 +4,10 @@ import { motion } from "framer-motion";
 import { Card } from "./ui/card";
 import { Textarea } from "./ui/textarea";
 import { Button } from "./ui/button";
-import { PostProps } from "@/types";
+import { PostProps } from "@/contexts/app-context";
 
 export const AddPost: React.FC = () => {
-  const { storedApp, setStoredApp } = useApp();
+  const { storedApp, changeStoredApp } = useApp();
   const user = storedApp?.currentUser;
 
   const [text, setText] = useState("");
@@ -19,7 +19,7 @@ export const AddPost: React.FC = () => {
     }
 
     const postData: PostProps = {
-      id: storedApp?.posts?.length! + 1,
+      id: Date.now(),
       createdAt: "1 month ago",
       content: text,
       replies: [],
@@ -31,15 +31,7 @@ export const AddPost: React.FC = () => {
     };
 
     const updatedPostList = [...storedApp?.posts!, postData];
-
-    setStoredApp((prev) => ({
-      ...prev,
-      posts: updatedPostList,
-    }));
-
-    const updatedStorageData = { ...storedApp, posts: updatedPostList };
-
-    localStorage.setItem("@postApp", JSON.stringify(updatedStorageData));
+    changeStoredApp("posts", updatedPostList);
 
     setText("");
   };

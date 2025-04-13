@@ -51,9 +51,12 @@ export const EditComment: React.FC<EditCommentProps> = ({
     <div className="flex md:absolute md:right-6 md:top-6">
       <AlertDialog>
         <AlertDialogTrigger asChild>
-          <Button variant={"ghost"} className="px-2 hover:bg-transparent">
-            <Trash color="#ff0000" />
-            <span className="font-medium text-red-500">Delete</span>
+          <Button
+            variant={"ghost"}
+            className="px-2 text-red-500 transition-colors hover:bg-transparent hover:text-red-500/70"
+          >
+            <Trash />
+            <span className="font-medium">Delete</span>
           </Button>
         </AlertDialogTrigger>
         <AlertDialogContent>
@@ -75,7 +78,7 @@ export const EditComment: React.FC<EditCommentProps> = ({
       {isEditing.postID !== id ? (
         <Button
           variant="ghost"
-          className="px-2 text-indigo-400 transition-all hover:bg-transparent hover:text-indigo-400 hover:opacity-70"
+          className="px-2 text-indigo-400 transition-colors hover:bg-transparent hover:text-indigo-400/70"
           onClick={() => handleEdit(id)}
         >
           <Pencil />
@@ -84,7 +87,7 @@ export const EditComment: React.FC<EditCommentProps> = ({
       ) : (
         <Button
           variant="ghost"
-          className="px-2 text-indigo-400 transition-all hover:bg-transparent hover:text-indigo-400 hover:opacity-70"
+          className="px-2 text-indigo-400 transition-colors hover:bg-transparent hover:text-indigo-400/70"
           onClick={() => changeIsEditing(false, null)}
         >
           Cancel

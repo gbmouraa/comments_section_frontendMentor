@@ -92,7 +92,7 @@ export const Post: React.FC<PostProps> = ({
             <div className="mx-auto w-[calc(100%-48px)] md:max-w-[608px] md:translate-x-7">
               <Textarea defaultValue={content} ref={textAreaRef} />
               <Button
-                className="ml-auto mt-3 block bg-indigo-500 text-white dark:text-[#2c2f33]"
+                className="ml-auto mt-3 block"
                 onClick={() => handleEdit(id)}
               >
                 Update

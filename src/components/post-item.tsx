@@ -14,7 +14,6 @@ import { ReplyButton } from "./reply-button";
 import { useApp } from "@/hooks/useApp";
 import { EditComment } from "./edit-comment";
 import { Replies } from "./replies";
-import { motion } from "framer-motion";
 import { Textarea } from "./ui/textarea";
 import { Button } from "./ui/button";
 import { AddReply } from "./add-reply";
@@ -26,6 +25,7 @@ export const Post: React.FC<PostProps> = ({
   replies,
   score,
   id,
+  createdAt,
 }: PostProps) => {
   const { storedApp, changeStoredApp, isEditing, changeIsEditing, isReplying } =
     useApp();
@@ -64,12 +64,7 @@ export const Post: React.FC<PostProps> = ({
   };
 
   return (
-    <motion.div
-      className="relative w-full max-w-[720px]"
-      initial={{ opacity: 0 }}
-      animate={{ opacity: 1 }}
-      transition={{ duration: 2 }}
-    >
+    <div className="relative w-full max-w-[720px]">
       <Card className="min-h-[140px] bg-white text-zinc-500 dark:bg-[#2c2f33] dark:text-gray-200">
         <div>
           <CardHeader className="w-fit md:translate-x-[64px]">
@@ -90,7 +85,7 @@ export const Post: React.FC<PostProps> = ({
                   </Badge>
                 )}
               </span>
-              <span className="text-sm font-thin">1 month ago</span>
+              <span className="text-sm font-thin">{createdAt}</span>
             </CardTitle>
           </CardHeader>
           {isEditing.active && isEditing.postID === id ? (
@@ -129,6 +124,7 @@ export const Post: React.FC<PostProps> = ({
                 score={item.score}
                 replyingTo={item.replyingTo}
                 replyingToPostID={id}
+                createdAt={item.createdAt}
               />
             </li>
           ))}
@@ -137,6 +133,6 @@ export const Post: React.FC<PostProps> = ({
         <></>
       )}
       {isReplying.replyingToCommentID === id && <AddReply id={id} />}
-    </motion.div>
+    </div>
   );
 };

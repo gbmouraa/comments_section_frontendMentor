@@ -12,6 +12,14 @@ export const AddPost: React.FC = () => {
 
   const [text, setText] = useState("");
 
+  const getDate = (): string => {
+    const date = new Date();
+    const month = date.getMonth() + 1;
+    const day = date.getDate();
+    const formatedDate = `${month}/${day}`;
+    return formatedDate;
+  };
+
   const handleSubmit = () => {
     if (text.trim() === "") {
       console.log("nada aqui");
@@ -20,7 +28,7 @@ export const AddPost: React.FC = () => {
 
     const postData: PostProps = {
       id: Date.now(),
-      createdAt: "1 month ago",
+      createdAt: getDate(),
       content: text,
       replies: [],
       score: 0,

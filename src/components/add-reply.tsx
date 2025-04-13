@@ -21,6 +21,14 @@ export const AddReply: React.FC<AddReplyProps> = ({ id }) => {
     return post;
   };
 
+  const getDate = (): string => {
+    const date = new Date();
+    const month = date.getMonth() + 1;
+    const day = date.getDate();
+    const formatedDate = `${month}/${day}`;
+    return formatedDate;
+  };
+
   const handleSubmit = () => {
     const post = findPost();
     const postsList = storedApp.posts;
@@ -34,7 +42,7 @@ export const AddReply: React.FC<AddReplyProps> = ({ id }) => {
         image: storedApp.currentUser.image,
         username: storedApp.currentUser.username,
       },
-      createdAt: new Date(),
+      createdAt: getDate(),
       replyingTo: isReplying.usernames!,
       replyingToPostID: id,
     };

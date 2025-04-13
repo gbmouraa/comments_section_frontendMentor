@@ -16,7 +16,7 @@ export interface PostProps {
   };
   replies: ReplyProps[];
   score: number;
-  createdAt?: string;
+  createdAt: string;
 }
 
 export interface ReplyProps {
@@ -29,7 +29,7 @@ export interface ReplyProps {
   score: number;
   replyingTo: string[];
   replyingToPostID: number;
-  createdAt?: Date;
+  createdAt: string;
 }
 
 interface CurrentUserProps {

@@ -24,6 +24,7 @@ export const Replies: React.FC<ReplyProps> = ({
   score,
   replyingTo,
   replyingToPostID,
+  createdAt,
 }: ReplyProps) => {
   const { storedApp, isEditing, changeStoredApp, changeIsEditing } = useApp();
   const textAreaRef = useRef<HTMLTextAreaElement>(null);
@@ -94,7 +95,7 @@ export const Replies: React.FC<ReplyProps> = ({
                   </Badge>
                 )}
               </span>
-              <span className="truncate text-sm font-thin">1 month ago</span>
+              <span className="truncate text-sm font-thin">{createdAt}</span>
             </CardTitle>
           </CardHeader>
           {isEditing.active && isEditing.postID === id ? (

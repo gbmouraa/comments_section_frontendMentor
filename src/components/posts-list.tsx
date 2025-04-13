@@ -28,6 +28,7 @@ export const Posts: React.FC = () => {
                   user={item.user}
                   replies={item.replies}
                   score={item.score}
+                  createdAt={item.createdAt}
                 />
               </motion.li>
             );

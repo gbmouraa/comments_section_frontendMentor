@@ -69,7 +69,10 @@ export const Replies: React.FC<ReplyProps> = ({
       className="relative mb-2 ml-auto min-w-full"
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
-      transition={{ duration: 2 }}
+      transition={{
+        ease: [0.25, 0.46, 0.45, 0.94],
+        duration: 1,
+      }}
     >
       <Card className="min-h-[140px] max-w-[730px] bg-white text-zinc-500 dark:bg-[#2c2f33] dark:text-gray-200">
         <div className="md:max-w-[80%] md:translate-x-[64px]">

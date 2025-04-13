@@ -68,7 +68,7 @@ export const AppProvider = ({ children }: AppProviderProps) => {
 
       try {
         const response = await api.get(
-          "https://api.npoint.io/44038e3c0e3f06e0006f",
+          "https://api.npoint.io/d1a3080fe08603bf65f2",
         );
 
         let data = {

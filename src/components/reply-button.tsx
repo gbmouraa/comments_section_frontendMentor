@@ -12,14 +12,25 @@ export const ReplyButton: React.FC<ReplyButtonProps> = ({
   users,
   isReply,
 }) => {
-  const { changeIsReplying } = useApp();
+  const { changeIsReplying, storedApp } = useApp();
 
   const handleReply = () => {
+    // reply of other reply
     if (!isReply) {
       changeIsReplying(true, id, users, null);
       return;
     }
-    changeIsReplying(true, isReply.originalPostID, users, id);
+
+    // this list removes the tag name if it is replying to a comment on its own post
+    const refineUsers = (): string[] => {
+      const refined = users.filter(
+        (user) => user !== storedApp.currentUser.username,
+      );
+      return refined;
+    };
+
+    const filteredUsers = refineUsers();
+    changeIsReplying(true, isReply.originalPostID, filteredUsers, id);
   };
 
   return (

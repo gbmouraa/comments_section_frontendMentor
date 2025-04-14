@@ -4,6 +4,7 @@ import { Profiles } from "./components/profiles";
 import { Posts } from "./components/posts-list";
 import { Loader } from "./components/loader";
 import { AddPost } from "./components/add-post";
+import { Footer } from "./components/footer";
 
 export const App: React.FC = () => {
   const { isLoading } = useApp();
@@ -18,6 +19,7 @@ export const App: React.FC = () => {
           <Posts />
           <Profiles />
           <AddPost />
+          <Footer />
         </div>
       )}
     </>

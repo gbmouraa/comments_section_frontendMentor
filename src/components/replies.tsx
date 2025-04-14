@@ -102,7 +102,7 @@ export const Replies: React.FC<ReplyProps> = ({
             <div className="w-[calc(100%-48px)] translate-x-6 md:mx-auto md:w-[calc(100%+12px)]">
               <Textarea defaultValue={content} ref={textAreaRef} />
               <Button
-                className="ml-auto mt-3 block bg-indigo-500 hover:text-indigo-400 dark:text-white"
+                className="ml-auto mt-3 block"
                 onClick={() => handleEditReply(id)}
               >
                 UPDATE

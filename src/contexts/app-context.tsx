@@ -5,6 +5,14 @@ export interface StoredAppData {
   theme: "light" | "dark";
   currentUser: CurrentUserProps;
   posts: PostProps[] | null;
+  votes: VotesProps[];
+}
+
+export interface VotesProps {
+  id: number;
+  positives: string[];
+  negatives: string[];
+  score: number;
 }
 
 export interface PostProps {
@@ -15,7 +23,6 @@ export interface PostProps {
     username: string;
   };
   replies: ReplyProps[];
-  score: number;
   createdAt: string;
 }
 
@@ -26,7 +33,6 @@ export interface ReplyProps {
     image: string;
     username: string;
   };
-  score: number;
   replyingTo: string[];
   replyingToPostID: number;
   createdAt: string;

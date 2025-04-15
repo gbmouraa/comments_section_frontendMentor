@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { useRef } from "react";
 import {
   Card,
@@ -23,12 +23,14 @@ export const Post: React.FC<PostProps> = ({
   content,
   user,
   replies,
-  score,
   id,
   createdAt,
 }: PostProps) => {
   const { storedApp, changeStoredApp, isEditing, changeIsEditing, isReplying } =
     useApp();
+
+  const [score, setScore] = useState<number>();
+
   const textAreaRef = useRef<HTMLTextAreaElement>(null);
 
   useEffect(() => {
@@ -41,6 +43,15 @@ export const Post: React.FC<PostProps> = ({
     };
     handleFocus();
   }, [isEditing]);
+
+  useEffect(() => {
+    const getPostVotes = () => {
+      const score = storedApp.votes.find((item) => item.id === id);
+      setScore(score?.score);
+    };
+
+    getPostVotes();
+  }, [storedApp.votes]);
 
   const handleEdit = (id: number) => {
     changeIsEditing(true, id);
@@ -105,7 +116,7 @@ export const Post: React.FC<PostProps> = ({
           )}
         </div>
         <CardFooter className="justify-between">
-          <VotingButton score={score} user={user.username} />
+          <VotingButton score={score!} user={user.username} postID={id} />
           {storedApp?.currentUser?.username !== user.username ? (
             <ReplyButton id={id} users={[user.username]} />
           ) : (
@@ -121,7 +132,6 @@ export const Post: React.FC<PostProps> = ({
                 content={item.content}
                 id={item.id}
                 user={item.user}
-                score={item.score}
                 replyingTo={item.replyingTo}
                 replyingToPostID={id}
                 createdAt={item.createdAt}

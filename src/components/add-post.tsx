@@ -31,15 +31,25 @@ export const AddPost: React.FC = () => {
       createdAt: getDate(),
       content: text,
       replies: [],
-      score: 0,
       user: {
         image: user?.image!,
         username: user?.username!,
       },
     };
 
+    const postVotes = {
+      id: postData.id,
+      positives: [],
+      negatives: [],
+      score: 0,
+    };
+
     const updatedPostList = [...storedApp?.posts!, postData];
     changeStoredApp("posts", updatedPostList);
+
+    const updatedVotesList = storedApp.votes;
+    updatedVotesList.push(postVotes);
+    changeStoredApp("votes", updatedVotesList);
 
     setText("");
   };

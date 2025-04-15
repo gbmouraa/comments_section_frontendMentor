@@ -1,4 +1,4 @@
-import { useRef, useEffect } from "react";
+import { useRef, useEffect, useState } from "react";
 import { motion } from "framer-motion";
 import { Avatar, AvatarImage, AvatarFallback } from "@radix-ui/react-avatar";
 import { ReplyButton } from "./reply-button";
@@ -21,13 +21,16 @@ export const Replies: React.FC<ReplyProps> = ({
   id,
   content,
   user,
-  score,
   replyingTo,
   replyingToPostID,
   createdAt,
 }: ReplyProps) => {
   const { storedApp, isEditing, changeStoredApp, changeIsEditing } = useApp();
+
+  const [score, setScore] = useState<number>();
+
   const textAreaRef = useRef<HTMLTextAreaElement>(null);
+
   const userNames = replyingTo.map((item) => {
     let username = "@" + item;
     return username;
@@ -45,6 +48,15 @@ export const Replies: React.FC<ReplyProps> = ({
     };
     handleFocus();
   }, [isEditing]);
+
+  useEffect(() => {
+    const getPostVotes = () => {
+      const score = storedApp.votes.find((item) => item.id === id);
+      setScore(score?.score);
+    };
+
+    getPostVotes();
+  }, [storedApp.votes]);
 
   const handleEditReply = (id: number) => {
     const postIdx = storedApp.posts?.findIndex(
@@ -118,7 +130,7 @@ export const Replies: React.FC<ReplyProps> = ({
           )}
         </div>
         <CardFooter className="justify-between">
-          <VotingButton score={score} user={user.username} />
+          <VotingButton score={score!} user={user.username} postID={id} />
           {storedApp?.currentUser?.username !== user.username ? (
             <ReplyButton
               id={id}

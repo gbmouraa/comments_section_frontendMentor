@@ -44,6 +44,40 @@ export const AppProvider = ({ children }: AppProviderProps) => {
           "https://firebasestorage.googleapis.com/v0/b/auth-7e2b3.appspot.com/o/avatars%2Fimage-juliusomo.png?alt=media&token=a736a8b1-63d9-488d-8425-6302b62eee64",
       },
       posts: [],
+      // this is just for example
+      votes: [
+        {
+          id: 1,
+          positives: [
+            "person1",
+            "person2",
+            "person3",
+            "person4",
+            "person5",
+            "person6",
+            "person7",
+            "person8",
+            "person9",
+            "person10",
+            "person11",
+          ],
+          negatives: [],
+          score: 11,
+        },
+        {
+          id: 2,
+          positives: ["person1", "person2", "person3", "person4", "person5"],
+          negatives: [],
+          score: 5,
+        },
+        {
+          id: 3,
+          positives: ["person1", "person2", "person3", "person4"],
+          negatives: [],
+          score: 4,
+        },
+        { id: 4, positives: ["person1", "person2"], negatives: [], score: 2 },
+      ],
     };
   });
 
@@ -68,7 +102,7 @@ export const AppProvider = ({ children }: AppProviderProps) => {
 
       try {
         const response = await api.get(
-          "https://api.npoint.io/d1a3080fe08603bf65f2",
+          "https://api.npoint.io/8b24c33cae51f4089bfd",
         );
 
         let data = {

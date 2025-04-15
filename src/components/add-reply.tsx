@@ -37,7 +37,6 @@ export const AddReply: React.FC<AddReplyProps> = ({ id }) => {
     const reply: ReplyProps = {
       content: content,
       id: Date.now(),
-      score: 0,
       user: {
         image: storedApp.currentUser.image,
         username: storedApp.currentUser.username,
@@ -50,6 +49,17 @@ export const AddReply: React.FC<AddReplyProps> = ({ id }) => {
     post?.replies.push(reply);
     changeStoredApp("posts", postsList);
     changeIsReplying(false, null, null, null);
+
+    const replyVotes = {
+      id: reply.id,
+      positives: [],
+      negatives: [],
+      score: 0,
+    };
+
+    const updatedVotesList = storedApp.votes;
+    updatedVotesList.push(replyVotes);
+    changeStoredApp("votes", updatedVotesList);
   };
 
   return (

@@ -7,11 +7,11 @@ Minha solução para o desafio [Interactive comments section challenge on Fronte
 Os usuários devem ser capazes de:
 
 - Ver o layout ideal para a aplicação em função do tamanho da tela do seu dispositivo
-- Ver os estados de hover de todos os elementos interactivos da página
+- Ver os estados de hover de todos os elementos interativos da página
 - Criar, ler, atualizar e apagar comentários e respostas
 - Dar upvote e downvote nos comentários
 
-**Os requisitos acima são os reqisitos originais do desafio**
+**Os requisitos acima são os requisitos originais do desafio**
 
 ### Minhas implementações 💡
 

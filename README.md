@@ -1,50 +1,45 @@
-# React + TypeScript + Vite
+# Frontend Mentor - Interactive comments section solution
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Minha solução para o desafio [Interactive comments section challenge on Frontend Mentor](https://www.frontendmentor.io/challenges/interactive-comments-section-iG1RugEG9).
 
-Currently, two official plugins are available:
+### O desafio 🥷
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+Os usuários devem ser capazes de:
 
-## Expanding the ESLint configuration
+- Ver o layout ideal para a aplicação em função do tamanho da tela do seu dispositivo
+- Ver os estados de hover de todos os elementos interactivos da página
+- Criar, ler, atualizar e apagar comentários e respostas
+- Dar upvote e downvote nos comentários
 
-If you are developing a production application, we recommend updating the configuration to enable type aware lint rules:
+**Os requisitos acima são os reqisitos originais do desafio**
 
-- Configure the top-level `parserOptions` property like this:
+### Minhas implementações 💡
 
-```js
-export default tseslint.config({
-  languageOptions: {
-    // other options...
-    parserOptions: {
-      project: ['./tsconfig.node.json', './tsconfig.app.json'],
-      tsconfigRootDir: import.meta.dirname,
-    },
-  },
-})
-```
+- Alteração entre tema claro e escuro
+- Troca de usuários
+- Persistência de todas as alterações feitas armazenando os dados no localStorage
 
-- Replace `tseslint.configs.recommended` to `tseslint.configs.recommendedTypeChecked` or `tseslint.configs.strictTypeChecked`
-- Optionally add `...tseslint.configs.stylisticTypeChecked`
-- Install [eslint-plugin-react](https://github.com/jsx-eslint/eslint-plugin-react) and update the config:
+### Screenshot
 
-```js
-// eslint.config.js
-import react from 'eslint-plugin-react'
+![](./public/screenshot.png)
 
-export default tseslint.config({
-  // Set the react version
-  settings: { react: { version: '18.3' } },
-  plugins: {
-    // Add the react plugin
-    react,
-  },
-  rules: {
-    // other rules...
-    // Enable its recommended rules
-    ...react.configs.recommended.rules,
-    ...react.configs['jsx-runtime'].rules,
-  },
-})
-```
+### Links
+
+- Repositório: [https://github.com/gbmouraa/comments_section_frontendMentor](https://github.com/gbmouraa/comments_section_frontendMentor)
+- Site: [https://comments-section-gm-dev.vercel.app/](https://comments-section-gm-dev.vercel.app/)
+
+### Tecnologias utilizadas 💻
+
+- Vite
+- React
+- Typescript
+- Tailwind
+- Framer Motion
+- Gerenciamento de estado usando o context-api
+
+### 🙋 Autor
+
+- **Portfólio:**  [Gabriel Moura Dev](https://portfolio-gabrieldev.vercel.app/)
+- **Linkedin:**  [Gabriel Moura](https://www.linkedin.com/in/gabriel-moura-b63382161/)
+
+**Obs: considere que o projeto está na versão beta, irei fazer vários ajustes para melhorar a performance**

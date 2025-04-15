@@ -6,7 +6,7 @@ import { Loader } from "./components/loader";
 import { AddPost } from "./components/add-post";
 import { Footer } from "./components/footer";
 
-export const App: React.FC = () => {
+export const App = () => {
   const { isLoading } = useApp();
 
   return (

@@ -1,6 +1,4 @@
 import { useApp } from "@/hooks/useApp";
-import { motion } from "framer-motion";
-
 export const Loader = () => {
   const { storedApp } = useApp();
 

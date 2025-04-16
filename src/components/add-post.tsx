@@ -22,7 +22,6 @@ export const AddPost: React.FC = () => {
 
   const handleSubmit = () => {
     if (text.trim() === "") {
-      console.log("nada aqui");
       return;
     }
 
